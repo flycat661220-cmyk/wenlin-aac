@@ -16,7 +16,7 @@ body{padding-bottom:148px!important}
 #talk #sentence{font-size:clamp(24px,3vw,36px);font-weight:800;min-height:76px;border:3px solid #66a9d4;display:flex;align-items:center;word-break:break-word}
 #talk .actions button{min-height:50px;font-size:18px}
 @media(max-width:520px){#corePanel{padding:6px 8px 8px}#core button,#core button:first-child,#core button:last-child{flex-basis:76px;min-width:76px;font-size:13px!important}body{padding-bottom:135px!important}}
-.answers button{position:relative}.answer-mark{display:block;font-size:48px;line-height:1;font-weight:900}.goodmark{color:#087d41}.badmark{color:#bc2626}.answers button:disabled{opacity:.85}#practiceTeacherSettings .fields{gap:16px}#practiceTeacherSettings input[type=checkbox]{width:20px;height:20px}</style></head><body><header><div><h1>🍔 飲食生活 AAC 溝通與學習</h1><small>文林國小特教班｜第 8～14 週｜網站學生版｜照片僅存本機</small></div><button onclick="switchTab('voice')">🔊 語音設定</button></header><main class="wrap"><nav class="nav" id="nav"></nav><div class="fields"><label>練習者代號 <input id="student" placeholder="例如：測試01" maxlength="25" style="width:150px"></label><label>選項數 <select id="choices"><option>2</option><option>3</option><option selected>4</option></select></label><span class="muted">練習紀錄暫存在此裝置；雲端上傳待安全強化後啟用</span></div>
+.answers button{position:relative}.answer-mark{display:block;font-size:48px;line-height:1;font-weight:900}.goodmark{color:#087d41}.badmark{color:#bc2626}.answers button:disabled{opacity:.85}#practiceTeacherSettings .fields{gap:16px}#practiceTeacherSettings input[type=checkbox]{width:20px;height:20px}[hidden]{display:none!important}</style></head><body><header><div><h1 id="aacSiteTitle">🍔 飲食生活 AAC 溝通與學習</h1><small id="aacSiteSubtitle">文林國小特教班｜第 8～14 週｜網站學生版｜照片僅存本機</small></div><button id="aacHeaderVoice" onclick="switchTab('voice')">🔊 語音設定</button></header><main class="wrap"><nav class="nav" id="nav"></nav><div class="fields"><label>練習者代號 <input id="student" placeholder="例如：測試01" maxlength="25" style="width:150px"></label><label>選項數 <select id="choices"><option>2</option><option>3</option><option selected>4</option></select></label><span class="muted">練習紀錄暫存在此裝置；雲端上傳待安全強化後啟用</span></div>
 <section class="panel" id="talk"><h2>💬 自由溝通｜點圖卡組句子</h2><div class="bar" id="sentence">請點選圖卡</div><div class="actions"><button class="primary" onclick="speak(tokens.join(''))">🔊 朗讀整句</button><button onclick="tokens.pop();renderSentence()">↶ 刪除一詞</button><button onclick="tokens=[];renderSentence()">清除句子</button></div><div class="actions" aria-label="常用動作"><button onclick="pickWithoutVoice('喝')">🥤 喝</button><button onclick="pickWithoutVoice('吃')">🍽️ 吃</button><button onclick="pickWithoutVoice('要')">🙋 要</button></div><div class="grid hide" id="board"></div></section>
 <section class="panel hide" id="sentenceTab"><h2>🧩 句子組合</h2><p class="muted">先選句型，再點下方圖片完成句子。</p><div class="actions" id="stems"></div><div class="bar" id="composed">我要＿＿。</div><div class="grid" id="sentenceOptions"></div><div class="actions"><button class="primary" onclick="speak(document.getElementById('composed').textContent)">🔊 朗讀句子</button></div></section>
 <section class="panel hide" id="quiz"><h2>👂 聽問題選圖片</h2><div class="fields"><label>選擇週次 <select id="quizWeek" onchange="changeQuizWeek()"><option value="8">第 8 週｜用餐場所</option><option value="9">第 9 週｜認識菜單與食物</option><option value="10">第 10 週｜選餐與點餐</option><option value="11">第 11 週｜等候與取餐</option><option value="12">第 12 週｜用餐整理</option><option value="13">第 13 週｜生活情境應用</option><option value="14">第 14 週｜單元總複習</option></select></label></div><div class="bar question" id="question"></div><div class="actions"><button onclick="speak(activeQ.q)">🔊 再聽一次</button><button onclick="nextQuestion()">下一題 →</button></div><div class="answers" id="quizAnswers"></div><div class="status" id="quizStatus" aria-live="polite"></div><div id="quizCount" class="muted"></div></section>
@@ -276,8 +276,10 @@ function exportCsv(){const groups=grouped(filtered()),lines=[['學生代號','�
     for(const key of ['questions','cards','cardOverrides','lessonOverrides','questionOverrides']){
       custom[key]=data[key];
     }
+    if(data.siteSettings && typeof data.siteSettings==='object')custom.siteSettings=data.siteSettings;
     core.splice(0,core.length,...data.core);
     custom.core=data.core;
+    if(window.aacApplySiteSettings)window.aacApplySiteSettings();
     renderCards();renderLesson();renderQuiz();
     if(typeof renderListen==='function')renderListen();
     if(typeof renderRead==='function')renderRead();
@@ -288,4 +290,35 @@ function exportCsv(){const groups=grouped(filtered()),lines=[['學生代號','�
   }
 })();
 </script>
-<script>document.addEventListener('DOMContentLoaded',()=>{if(typeof refreshQuizWeekOptions==='function')refreshQuizWeekOptions();});</script></body></html>
+<script>document.addEventListener('DOMContentLoaded',()=>{if(typeof refreshQuizWeekOptions==='function')refreshQuizWeekOptions();});</script>
+<script>
+/* v5: cloud-synced site header and student menu preferences. */
+(function(){
+const defaults={title:'飲食生活 AAC 溝通與學習',subtitle:'文林國小特教班｜第 8～14 週',visibleTabs:['talk','sentenceTab','quiz','listen','read','lesson','records','voice']};
+window.aacSiteDefaults=defaults;
+window.aacApplySiteSettings=function(){
+ const raw=(typeof custom!=='undefined'&&custom.siteSettings)||{};
+ const title=typeof raw.title==='string'?raw.title:defaults.title;
+ const subtitle=typeof raw.subtitle==='string'?raw.subtitle:defaults.subtitle;
+ const allowed=Array.isArray(raw.visibleTabs)?raw.visibleTabs:defaults.visibleTabs;
+ const titleEl=document.getElementById('aacSiteTitle'), subEl=document.getElementById('aacSiteSubtitle');
+ if(titleEl)titleEl.textContent=title||defaults.title;
+ if(subEl)subEl.textContent=subtitle||defaults.subtitle;
+ const headerVoice=document.getElementById('aacHeaderVoice');
+ if(headerVoice)headerVoice.hidden=!allowed.includes('voice');
+ const nav=document.getElementById('nav');
+ if(nav){for(const btn of nav.querySelectorAll('button[data-tab]')){
+ const key=btn.dataset.tab;
+ const isTeacher=key==='teacher'||key==='cloudTeacher';
+ btn.hidden=!isTeacher&&!allowed.includes(key);
+ }}
+ // Hidden sections are not deleted; if the active student tab is hidden, return to the first available tab.
+ if(typeof tab!=='undefined' && !allowed.includes(tab) && tab!=='teacher' && tab!=='cloudTeacher'){
+   const first=defaults.visibleTabs.find(x=>allowed.includes(x));
+   if(first && typeof switchTab==='function')switchTab(first);
+ }
+};
+window.aacApplySiteSettings();
+})();
+</script>
+</body></html>
