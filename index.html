@@ -16,7 +16,79 @@ body{padding-bottom:148px!important}
 #talk #sentence{font-size:clamp(24px,3vw,36px);font-weight:800;min-height:76px;border:3px solid #66a9d4;display:flex;align-items:center;word-break:break-word}
 #talk .actions button{min-height:50px;font-size:18px}
 @media(max-width:520px){#corePanel{padding:6px 8px 8px}#core button,#core button:first-child,#core button:last-child{flex-basis:76px;min-width:76px;font-size:13px!important}body{padding-bottom:135px!important}}
-.answers button{position:relative}.answer-mark{display:block;font-size:48px;line-height:1;font-weight:900}.goodmark{color:#087d41}.badmark{color:#bc2626}.answers button:disabled{opacity:.85}#practiceTeacherSettings .fields{gap:16px}#practiceTeacherSettings input[type=checkbox]{width:20px;height:20px}[hidden]{display:none!important}</style></head><body><header><div><h1 id="aacSiteTitle">🍔 飲食生活 AAC 溝通與學習</h1><small id="aacSiteSubtitle">文林國小特教班｜第 8～14 週｜網站學生版｜照片僅存本機</small></div><button id="aacHeaderVoice" onclick="switchTab('voice')">🔊 語音設定</button></header><main class="wrap"><nav class="nav" id="nav"></nav><div class="fields"><label>練習者代號 <input id="student" placeholder="例如：測試01" maxlength="25" style="width:150px"></label><label>選項數 <select id="choices"><option>2</option><option>3</option><option selected>4</option></select></label><span class="muted">練習紀錄暫存在此裝置；雲端上傳待安全強化後啟用</span></div>
+.answers button{position:relative}.answer-mark{display:block;font-size:48px;line-height:1;font-weight:900}.goodmark{color:#087d41}.badmark{color:#bc2626}.answers button:disabled{opacity:.85}#practiceTeacherSettings .fields{gap:16px}#practiceTeacherSettings input[type=checkbox]{width:20px;height:20px}[hidden]{display:none!important}
+
+/* 文林 AAC v6：手機、平板與電腦自動適應；僅調整顯示，不修改教材或雲端邏輯 */
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{min-width:0;overflow-x:hidden}
+header,main,.wrap,.panel,.strip,.bar,.lesson,.fields{min-width:0}
+button{touch-action:manipulation}
+img{max-width:100%}
+#corePanel{padding-bottom:max(10px,env(safe-area-inset-bottom))!important}
+#core{overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+@media (max-width:900px){
+ header{padding:14px 16px;align-items:flex-start}
+ .wrap{padding:12px}
+ .panel{padding:15px}
+ .nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+ .nav button{min-width:0;min-height:58px;white-space:normal;overflow-wrap:anywhere;line-height:1.35;font-size:16px;padding:10px 7px}
+ .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .answers{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .answers button{min-width:0;min-height:158px}
+ .fields{align-items:stretch}
+ .fields label{max-width:100%}
+ .lesson p{min-width:0}
+}
+@media (max-width:600px){
+ header{padding:12px;gap:8px}
+ header h1{font-size:clamp(21px,6vw,28px);line-height:1.25;overflow-wrap:anywhere}
+ header small{font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+ #aacHeaderVoice{font-size:14px;padding:8px 12px;min-height:42px}
+ .wrap{padding:9px}
+ .panel,.strip{border-radius:13px;padding:12px;margin-bottom:11px}
+ .nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:11px}
+ .nav button{min-height:64px;font-size:16px;font-weight:700;padding:9px 5px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .tile{min-width:0;min-height:145px;font-size:19px;padding:8px;overflow-wrap:anywhere}
+ .tile img{height:102px}
+ .tile .emo{font-size:54px}
+ .question{font-size:clamp(21px,5.5vw,27px);line-height:1.5}
+ .answers{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}
+ .answers button{min-height:165px;padding:9px 5px;font-size:20px;line-height:1.35;overflow-wrap:anywhere}
+ .answers img{height:108px}
+ .answers .emo{font-size:64px}
+ .answer-mark{font-size:42px}
+ .actions{gap:7px}
+ .actions button{min-height:48px;padding:10px 12px;font-size:16px}
+ .bar{font-size:20px;padding:11px;overflow-wrap:anywhere}
+ .status{font-size:19px;line-height:1.5}
+ .lesson{gap:9px}
+ .lesson p{font-size:22px;flex-basis:100%}
+ #lessonPic{max-width:100%}
+ #lessonPic img{max-height:240px;object-fit:contain}
+ #talk #sentence{min-height:70px;font-size:24px}
+ #corePanel{max-height:132px!important;padding:6px 8px max(8px,env(safe-area-inset-bottom))!important}
+ #corePanel h2{font-size:14px!important}
+ #core{gap:7px}
+ #core button,#core button:first-child,#core button:last-child{flex:0 0 79px;min-width:79px;min-height:75px!important;max-height:90px;font-size:14px!important}
+ #core .emo{font-size:29px!important}
+ #core img{height:36px!important}
+ body{padding-bottom:calc(148px + env(safe-area-inset-bottom))!important}
+ .rowitem{flex-wrap:wrap}
+ .editrow{overflow-wrap:anywhere}
+ input,select,textarea{max-width:100%;font-size:16px}
+ iframe{max-width:100%}
+}
+@media (max-width:360px){
+ .nav button{font-size:14px;min-height:61px}
+ .tile{min-height:127px;font-size:17px}
+ .tile img{height:88px}
+ .answers button{font-size:18px;min-height:148px}
+ .answers img{height:93px}
+ #core button,#core button:first-child,#core button:last-child{flex-basis:72px;min-width:72px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style></head><body><header><div><h1 id="aacSiteTitle">🍔 飲食生活 AAC 溝通與學習</h1><small id="aacSiteSubtitle">文林國小特教班｜第 8～14 週｜網站學生版｜照片僅存本機</small></div><button id="aacHeaderVoice" onclick="switchTab('voice')">🔊 語音設定</button></header><main class="wrap"><nav class="nav" id="nav"></nav><div class="fields"><label>練習者代號 <input id="student" placeholder="例如：測試01" maxlength="25" style="width:150px"></label><label>選項數 <select id="choices"><option>2</option><option>3</option><option selected>4</option></select></label><span class="muted">練習紀錄暫存在此裝置；雲端上傳待安全強化後啟用</span></div>
 <section class="panel" id="talk"><h2>💬 自由溝通｜點圖卡組句子</h2><div class="bar" id="sentence">請點選圖卡</div><div class="actions"><button class="primary" onclick="speak(tokens.join(''))">🔊 朗讀整句</button><button onclick="tokens.pop();renderSentence()">↶ 刪除一詞</button><button onclick="tokens=[];renderSentence()">清除句子</button></div><div class="actions" aria-label="常用動作"><button onclick="pickWithoutVoice('喝')">🥤 喝</button><button onclick="pickWithoutVoice('吃')">🍽️ 吃</button><button onclick="pickWithoutVoice('要')">🙋 要</button></div><div class="grid hide" id="board"></div></section>
 <section class="panel hide" id="sentenceTab"><h2>🧩 句子組合</h2><p class="muted">先選句型，再點下方圖片完成句子。</p><div class="actions" id="stems"></div><div class="bar" id="composed">我要＿＿。</div><div class="grid" id="sentenceOptions"></div><div class="actions"><button class="primary" onclick="speak(document.getElementById('composed').textContent)">🔊 朗讀句子</button></div></section>
 <section class="panel hide" id="quiz"><h2>👂 聽問題選圖片</h2><div class="fields"><label>選擇週次 <select id="quizWeek" onchange="changeQuizWeek()"><option value="8">第 8 週｜用餐場所</option><option value="9">第 9 週｜認識菜單與食物</option><option value="10">第 10 週｜選餐與點餐</option><option value="11">第 11 週｜等候與取餐</option><option value="12">第 12 週｜用餐整理</option><option value="13">第 13 週｜生活情境應用</option><option value="14">第 14 週｜單元總複習</option></select></label></div><div class="bar question" id="question"></div><div class="actions"><button onclick="speak(activeQ.q)">🔊 再聽一次</button><button onclick="nextQuestion()">下一題 →</button></div><div class="answers" id="quizAnswers"></div><div class="status" id="quizStatus" aria-live="polite"></div><div id="quizCount" class="muted"></div></section>
