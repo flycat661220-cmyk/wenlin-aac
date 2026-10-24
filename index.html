@@ -35,7 +35,7 @@ function activeCards(){return allCards().filter(c=>!getCardOverride(c[0]).hidden
 function coreItems(){let a=core.filter(x=>x[0]!=='是'&&x[0]!=='不是');return [['是','✔️'],...a,['不是','❌']]}
 function corePress(w){speak(w);if(tab==='talk'){pickWithoutVoice(w)}else if(tab==='sentenceTab'){if(['我要','不要','還要'].includes(w))setStem(w==='不要'?'我不要':w);else compose(w)}else{$('coreFeedback').textContent='已表達：'+w}}
 function pickWithoutVoice(w){tokens.push(w);renderSentence()}
-function renderCore(){ $('core').innerHTML=coreItems().map(([w,e])=>{let o=custom.cardOverrides['@core:'+w]||{};return '<button onclick="corePress('+JSON.stringify(w).replace(/"/g,'&quot;')+')">'+(o.image?'<img src="'+o.image+'" alt="">':'<span class="emo">'+esc(o.emoji||e)+'</span>')+esc(o.displayLabel||o.label||w)+'</button>'}).join('')}
+function renderCore(){ $('core').innerHTML=coreItems().map(([w,e])=>{let o=custom.cardOverrides['@core:'+w]||{};return '<button onclick="corePress('+JSON.stringify(w).replace(/"/g,'&quot;')+')">'+(o.image?'<img src="'+o.image+'" alt="">':'<span class="emo">'+esc(o.emoji||e)+'</span>')+esc(o.label||w)+'</button>'}).join('')}
 function editFile(input,cb){let f=input.files?.[0];if(!f)return; if(f.size>1200000){alert('圖片請小於1.2MB');return}let r=new FileReader();r.onload=()=>cb(r.result);r.readAsDataURL(f)}
 function updateCard(w,field,val){custom.cardOverrides[w]||={};custom.cardOverrides[w][field]=val;saveCustom();renderTeacher()}
 function updateCore(w,field,val){let i=core.findIndex(x=>x[0]===w);if(field==='label'){if(i>=0){core[i][0]=val;custom.core=core;saveCustom();renderTeacher()}}else{custom.cardOverrides['@core:'+w]||={};custom.cardOverrides['@core:'+w][field]=val;saveCustom();renderTeacher()}}
@@ -219,9 +219,19 @@ function exportCsv(){const groups=grouped(filtered()),lines=[['學生代號','�
   notice.textContent='教材：正在確認最新版本…';
   document.body.appendChild(notice);
   try {
-    const response=await fetch('./aac-materials.json',{cache:'no-store'});
-    if(!response.ok)throw new Error('HTTP '+response.status);
-    const data=await response.json();
+    let data;
+    try {
+      const cloud=await fetch('https://stbdazhruoigsmzaegrb.supabase.co'+'/rest/v1/aac_materials?id=eq.1&select=content',{cache:'no-store',headers:{'apikey':'sb_publishable_md6a110zNzC7RN_PcL-BFA_R4zqTQVG'}});
+      if(!cloud.ok)throw Error('Supabase HTTP '+cloud.status);
+      const rows=await cloud.json();
+      if(!Array.isArray(rows)||!rows[0]?.content)throw Error('尚無雲端教材');
+      data=rows[0].content;
+    }catch(cloudError){
+      console.info('改用 GitHub 既有教材',cloudError);
+      const response=await fetch('./aac-materials.json',{cache:'no-store'});
+      if(!response.ok)throw new Error('HTTP '+response.status);
+      data=await response.json();
+    }
     if(!data || !Array.isArray(data.questions) || !Array.isArray(data.cards) ||
        !Array.isArray(data.core) || !data.cardOverrides ||
        !data.lessonOverrides || !data.questionOverrides)throw new Error('教材格式不符');
