@@ -1,9 +1,10 @@
+
 {
   "questions": [],
   "cards": [],
   "cardOverrides": {
     "@core:好了": {
-      "displayLabel": "完成"
+      "displayLabel": "做完了"
     }
   },
   "core": [
