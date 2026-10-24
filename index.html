@@ -37,7 +37,7 @@ let custom;
 try {custom=Object.keys(embeddedSettings).length ? embeddedSettings : JSON.parse(localStorage.getItem('aac_custom_v3')||'{"questions":[],"cards":[]}');}
 catch(e){custom={questions:[],cards:[]};}
 
-custom.questions ||= []; custom.cards ||= []; custom.cardOverrides ||= {}; custom.core ||= null; custom.lessonOverrides ||= {}; custom.questionOverrides ||= {}; custom.practiceSettings ||= {count:5,order:"random",listenWords:null,readWords:null}; custom.lessonHidden ||= {};
+custom.questions ||= []; custom.cards ||= []; custom.cardOverrides ||= {}; custom.core ||= null; custom.lessonOverrides ||= {}; custom.questionOverrides ||= {}; custom.practiceSettings ||= {count:5,order:"random",listenWords:null,readWords:null}; custom.lessonHidden ||= {}; custom.practiceSettings.openQuizWeeks ??= [8,9,10];
 const core=custom.core||defaultCore.map(x=>[...x]);
 const weeklyQuestions={"8":[{"q":"今天我們要去哪裡吃午餐？","a":"麥當勞","wrong":["櫃台","座位","餐盤"],"week":8},{"q":"我們要在哪裡點餐？","a":"櫃台","wrong":["座位","餐盤","麥當勞"],"week":8},{"q":"到了麥當勞，先找哪裡坐？","a":"座位","wrong":["櫃台","餐盤","菜單"],"week":8},{"q":"點好的食物要放在哪裡？","a":"餐盤","wrong":["座位","櫃台","菜單"],"week":8}],"9":[{"q":"坐好以後，我要看什麼？","a":"菜單","wrong":["餐盤","櫃台","座位"],"week":9},{"q":"老師問你想吃什麼，你可以選哪一種食物？","a":"漢堡","wrong":["可樂","果汁","番茄醬"],"week":9},{"q":"我想吃薯條，要選哪張圖卡？","a":"薯條","wrong":["漢堡","雞塊","果汁"],"week":9},{"q":"我想吃雞塊，要指哪一張圖卡？","a":"雞塊","wrong":["薯條","漢堡","可樂"],"week":9}],"10":[{"q":"我不要可樂，我想喝什麼？","a":"果汁","wrong":["可樂","漢堡","薯條"],"week":10},{"q":"我要點餐，應該走去哪裡？","a":"櫃台","wrong":["座位","餐盤","廁所"],"week":10},{"q":"想知道有哪些食物，可以看什麼？","a":"菜單","wrong":["餐盤","座位","櫃台"],"week":10},{"q":"點餐時想吃漢堡，應該指哪張圖？","a":"漢堡","wrong":["薯條","可樂","餐盤"],"week":10}],"11":[{"q":"點完餐還沒拿到食物，我要做什麼？","a":"等一下","wrong":["點餐","丟垃圾","拿餐盤"],"week":11},{"q":"聽到取餐號碼，要去做什麼？","a":"拿餐盤","wrong":["丟垃圾","看菜單","點餐"],"week":11},{"q":"拿到餐盤後，要回到哪裡吃？","a":"座位","wrong":["櫃台","廁所","麥當勞"],"week":11},{"q":"食物放在哪裡端回座位？","a":"餐盤","wrong":["菜單","櫃台","座位"],"week":11}],"12":[{"q":"吃完東西，垃圾要怎麼處理？","a":"丟垃圾","wrong":["點餐","看菜單","拿餐盤"],"week":12},{"q":"丟完垃圾，餐盤要怎麼辦？","a":"餐盤","wrong":["菜單","漢堡","座位"],"week":12},{"q":"在餐廳要坐在哪裡吃東西？","a":"座位","wrong":["櫃台","廁所","操場"],"week":12},{"q":"用餐後要整理的物品是哪一個？","a":"餐盤","wrong":["菜單","果汁","漢堡"],"week":12}],"13":[{"q":"在麥當勞想買食物，要先看什麼？","a":"菜單","wrong":["座位","餐盤","廁所"],"week":13},{"q":"想吃漢堡，請選出漢堡圖卡。","a":"漢堡","wrong":["雞塊","薯條","果汁"],"week":13},{"q":"想喝飲料又不想喝可樂，可以選什麼？","a":"果汁","wrong":["可樂","番茄醬","雞塊"],"week":13},{"q":"買完食物後，要拿什麼裝餐點？","a":"餐盤","wrong":["菜單","櫃台","座位"],"week":13}],"14":[{"q":"我們今天去的用餐場所是哪裡？","a":"麥當勞","wrong":["櫃台","座位","餐盤"],"week":14},{"q":"進餐廳後，想點餐要去哪裡？","a":"櫃台","wrong":["座位","廁所","操場"],"week":14},{"q":"聽到號碼，要去拿什麼？","a":"拿餐盤","wrong":["看菜單","丟垃圾","點餐"],"week":14},{"q":"吃完餐點後，要做什麼？","a":"丟垃圾","wrong":["看菜單","點餐","等一下"],"week":14}]};
 let lessonLines=[['今天，我們去麥當勞。','麥當勞'],['到了麥當勞，我先找座位。','座位'],['坐好以後，我看菜單。','菜單'],['菜單上有漢堡、薯條和飲料。','漢堡'],['老師問我：「你要吃什麼？」','菜單'],['我指著漢堡說：「我要漢堡。」','漢堡'],['我搖搖頭說：「我不要可樂，我要果汁。」','果汁'],['想好了，我到櫃台點餐。','櫃台'],['點餐時，我用圖卡說「要」。','點餐'],['點完餐，我在旁邊等一下。','座位'],['聽到號碼，我去拿餐盤。','拿餐盤'],['我拿餐盤回到座位。','餐盤'],['吃完以後，我去丟垃圾。','丟垃圾'],['我丟垃圾，再把餐盤放好。','餐盤']].map(x=>({t:x[0],w:x[1]}));
@@ -94,8 +94,10 @@ function beginPractice(mode){practiceMode=mode;practiceIndex=0;practiceFinished=
 function practiceVocab(mode){let v=vocab().filter(w=>!getCardOverride(w).hidden);const list=custom.practiceSettings?.[mode==='read'?'readWords':'listenWords'];return Array.isArray(list)?v.filter(w=>list.includes(w)):v;}
 function practiceProgress(mode){const id=mode==='quiz'?'quizCount':mode+'Status';const el=$(id);if(!el)return;const progress='第 '+Math.min(practiceIndex+1,practiceSession.length)+' / '+practiceSession.length+' 題';if(mode==='quiz')el.textContent='第 '+quizWeek+' 週｜'+progress;else el.dataset.progress=progress;}
 function finishPractice(mode){practiceFinished=true;const id=mode==='quiz'?'quizStatus':mode+'Status';$(id).textContent='🎉 本次練習完成！';if(mode==='quiz')$('question').textContent='本次練習完成';else if(mode==='read')$('readPicture').textContent='🎉';['quizAnswers','listenAnswers','readAnswers'].forEach(x=>$(x).replaceChildren());speak('本次練習完成，你很棒！');}
+function allowedQuizWeeks(){const a=custom.practiceSettings?.openQuizWeeks;return Array.isArray(a)?[8,9,10,11,12,13,14].filter(w=>a.map(Number).includes(w)):[8,9,10]}
+function refreshQuizWeekOptions(){const el=$('quizWeek');if(!el)return;const allowed=allowedQuizWeeks(), old=Number(el.value);[...el.options].forEach(o=>o.hidden=!allowed.includes(Number(o.value)));el.replaceChildren(...allowed.map(w=>{const o=document.createElement('option');o.value=w;o.textContent='第 '+w+' 週｜'+({8:'用餐場所',9:'認識菜單與食物',10:'選餐與點餐',11:'等候與取餐',12:'用餐整理',13:'生活情境應用',14:'單元總複習'}[w]);return o}));if(allowed.length){quizWeek=allowed.includes(old)?old:allowed[0];el.value=String(quizWeek)}else{quizWeek=0;el.add(new Option('目前沒有開放的週次',''));}practiceMode='';practiceSession=[];practiceIndex=0;renderQuiz()}
 function changeQuizWeek(){resetCloudBatch();quizWeek=Number($('quizWeek').value);beginPractice('quiz');renderQuiz()}
-function renderQuiz(){if(practiceMode!=='quiz')beginPractice('quiz');if(!practiceSession.length){$('question').textContent='本週尚未啟用題目';$('quizAnswers').replaceChildren();$('quizCount').textContent='0 題';return}if(practiceIndex>=practiceSession.length){finishPractice('quiz');return}activeQ=practiceSession[practiceIndex];$('question').textContent=activeQ.q;$('quizStatus').textContent='';drawAnswers('quizAnswers',activeQ.a,options(activeQ.a,activeQ.wrong||[]),'quiz');practiceProgress('quiz')}
+function renderQuiz(){if(!allowedQuizWeeks().length){$('question').textContent='目前沒有開放的練習週次';$('quizAnswers').replaceChildren();$('quizCount').textContent='0 題';return}if(practiceMode!=='quiz')beginPractice('quiz');if(!practiceSession.length){$('question').textContent='本週尚未啟用題目';$('quizAnswers').replaceChildren();$('quizCount').textContent='0 題';return}if(practiceIndex>=practiceSession.length){finishPractice('quiz');return}activeQ=practiceSession[practiceIndex];$('question').textContent=activeQ.q;$('quizStatus').textContent='';drawAnswers('quizAnswers',activeQ.a,options(activeQ.a,activeQ.wrong||[]),'quiz');practiceProgress('quiz')}
 function nextQuestion(){if(practiceMode!=='quiz')beginPractice('quiz');if(!answered&&!practiceFinished)return;practiceIndex++;renderQuiz()}
 function vocab(){return [...new Set(['麥當勞','櫃台','座位','餐盤','漢堡','薯條','雞塊','可樂','果汁','番茄醬','菜單','點餐','拿餐盤','丟垃圾',...custom.cards.map(c=>c.w)])]}
 function renderListen(){if(practiceMode!=='listen')beginPractice('listen');if(!practiceSession.length){$('listenStatus').textContent='目前沒有啟用的語詞';$('listenAnswers').replaceChildren();return}if(practiceIndex>=practiceSession.length){finishPractice('listen');return}activeWord=practiceSession[practiceIndex];$('listenStatus').textContent='';drawAnswers('listenAnswers',activeWord,options(activeWord,practiceVocab('listen').filter(x=>x!==activeWord)),'listen')}
@@ -175,38 +177,34 @@ $('cloudUrl').value=localStorage.getItem(CLOUD_URL_KEY)||'';$('choices').onchang
 <div id="studentChooser" role="dialog" aria-modal="true" aria-label="選擇練習學生"><div class="student-dialog"><h2>👋 請選擇你的照片</h2><p>點選自己的照片，開始 AAC 練習</p><div id="studentCards"></div><p style="font-size:14px;color:#657789">照片與顯示名稱只存在這台裝置。請由老師或家長協助設定；共用裝置請留意隱私。</p></div></div>
 <script>
 (function(){
-const KEY='aac_student_profiles_v1';
+const KEY='aac_student_profiles_v2';
+const ICONS=['🐻','🐰','🦁','🐼','🐯','🐱','🐸','🐨','🐶','🦊','🐧','🐵','🦄','🐙','🦋','🐢'];
+const defaults=[['梓辰','🐻'],['文悠','🐰'],['邦育','🦁'],['艾倫','🐼'],['忠陽','🐯'],['翎卉','🐱'],['惟竣','🐸']].map((x,i)=>({code:'WL'+String(i+1).padStart(3,'0'),name:x[0],icon:x[1]}));
 let profiles=[];
 try{profiles=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){}
-if(!Array.isArray(profiles)||!profiles.length)profiles=[{code:'TEST001',name:'測試學生',photo:''}];
+if(!Array.isArray(profiles)||!profiles.length)profiles=defaults;
+function clean(arr){return arr.filter(x=>x&&typeof x.name==='string'&&typeof x.code==='string').slice(0,40).map(x=>({code:x.code.slice(0,40),name:x.name.slice(0,20),icon:ICONS.includes(x.icon)?x.icon:'🐻'}))}
+profiles=clean(profiles);
 const chooser=document.getElementById('studentChooser');
 const studentInput=document.getElementById('student');
 studentInput.readOnly=true;
-studentInput.title='請透過學生照片選擇練習者';
-const changeBtn=document.createElement('button');changeBtn.id='changeStudentBtn';changeBtn.type='button';changeBtn.textContent='👤 選擇學生';changeBtn.onclick=()=>{chooser.classList.remove('is-hidden');renderStudentCards()};
+studentInput.title='請點選自己的名字與動物圖像';
+const heading=chooser.querySelector('h2');if(heading)heading.textContent='👋 請選擇你的名字';
+const hint=chooser.querySelector('p');if(hint)hint.textContent='點選自己的動物圖像，開始 AAC 練習';
+const changeBtn=document.createElement('button');changeBtn.id='changeStudentBtn';changeBtn.type='button';changeBtn.textContent='👤 選擇學生';changeBtn.onclick=()=>{chooser.classList.remove('is-hidden');renderCards()};
 studentInput.insertAdjacentElement('afterend',changeBtn);
 function save(){localStorage.setItem(KEY,JSON.stringify(profiles))}
-function renderStudentCards(){
+function renderCards(){
  const root=document.getElementById('studentCards');root.replaceChildren();
- profiles.forEach(p=>{const b=document.createElement('button');b.type='button';
- if(p.photo){const im=document.createElement('img');im.src=p.photo;im.alt=p.name+'的照片';b.append(im)}else{const av=document.createElement('span');av.className='avatar';av.textContent='👤';b.append(av)}
+ profiles.forEach(p=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',p.name);
+ const av=document.createElement('span');av.className='avatar';av.textContent=p.icon;av.style.fontSize='54px';b.append(av);
  const name=document.createElement('span');name.textContent=p.name;b.append(name);
  b.onclick=()=>{studentInput.value=p.code;chooser.classList.add('is-hidden');if(typeof resetCloudBatch==='function')resetCloudBatch()};root.append(b)});
 }
-const teacher=document.getElementById('teacher');
-const panel=document.createElement('div');panel.className='panel';
-panel.innerHTML='<h3>👤 學生照片與姓名（只儲存在此裝置）</h3><p class="muted">照片及姓名只儲存在目前瀏覽器，不會上傳到網站或雲端。共用裝置上其他使用者可能看見；請由家長或老師協助設定。</p><div id="studentEditList"></div><button type="button" id="addStudentProfile">＋ 新增學生選擇卡</button>';
-document.getElementById('profiles').append(panel);
-function renderEditor(){const list=document.getElementById('studentEditList');list.replaceChildren();profiles.forEach((p,i)=>{
- const row=document.createElement('div');row.className='student-edit-row';
- const im=document.createElement('img');if(p.photo)im.src=p.photo;else{im.alt='尚未上傳照片';im.style.background='#b9c8d8'}row.append(im);
- const name=document.createElement('input');name.type='text';name.value=p.name;name.placeholder='顯示名稱';name.onchange=()=>{p.name=name.value.trim()||p.code;save();renderStudentCards()};row.append(name);
- const code=document.createElement('input');code.type='text';code.value=p.code;code.placeholder='學生代號';code.title='須先在 Supabase students 建立相同代號';code.onchange=()=>{let val=code.value.trim();if(!/^[A-Za-z0-9_-]{1,40}$/.test(val)||profiles.some((x,j)=>j!==i&&x.code===val)){alert('代號不正確或已重複');code.value=p.code;return}p.code=val;save()};row.append(code);
- const file=document.createElement('input');file.type='file';file.accept='image/*';file.setAttribute('aria-label','上傳學生照片');file.onchange=()=>{const f=file.files?.[0];if(!f)return;if(f.size>700000){alert('請使用小於 700KB 的圖片');return}const reader=new FileReader();reader.onload=()=>{p.photo=reader.result;save();renderEditor();renderStudentCards()};reader.readAsDataURL(f)};row.append(file);
- const del=document.createElement('button');del.type='button';del.textContent='刪除';del.disabled=profiles.length===1;del.onclick=()=>{if(!confirm('確定刪除這位學生的本機選擇卡？'))return;profiles.splice(i,1);save();renderEditor();renderStudentCards()};row.append(del);list.append(row)
- })}
- document.getElementById('addStudentProfile').onclick=()=>{const code='TEST'+String(profiles.length+1).padStart(3,'0');if(profiles.some(p=>p.code===code)){alert('代號重複，請先修改既有代號');return}profiles.push({code,name:'測試學生'+(profiles.length+1),photo:''});save();renderEditor();renderStudentCards()};
- renderStudentCards();renderEditor();
+window.aacGetStudentProfiles=()=>clean(profiles);
+window.aacApplyStudentProfiles=function(items){if(!Array.isArray(items))return;profiles=clean(items);save();renderCards();if(!profiles.some(p=>p.code===studentInput.value)){studentInput.value='';chooser.classList.remove('is-hidden')}};
+// 學生名單由教師雲端發布，不在學生公開頁面編輯。
+renderCards();
 })();
 </script><style>
 #aacReportPanel{margin-top:18px;border:2px solid #d7e6f5;border-radius:16px;padding:18px;background:#f8fbff;color:#223}
@@ -263,11 +261,13 @@ function exportCsv(){const groups=grouped(filtered()),lines=[['學生代號','�
       const rows=await cloud.json();
       if(!Array.isArray(rows)||!rows[0]?.content)throw Error('尚無雲端教材');
       data=rows[0].content;
+      if(Array.isArray(data.studentProfiles)&&window.aacApplyStudentProfiles)window.aacApplyStudentProfiles(data.studentProfiles);
     }catch(cloudError){
       console.info('改用 GitHub 既有教材',cloudError);
       const response=await fetch('./aac-materials.json',{cache:'no-store'});
       if(!response.ok)throw new Error('HTTP '+response.status);
       data=await response.json();
+      if(Array.isArray(data.studentProfiles)&&window.aacApplyStudentProfiles)window.aacApplyStudentProfiles(data.studentProfiles);
     }
     if(!data || !Array.isArray(data.questions) || !Array.isArray(data.cards) ||
        !Array.isArray(data.core) || !data.cardOverrides ||
@@ -288,4 +288,4 @@ function exportCsv(){const groups=grouped(filtered()),lines=[['學生代號','�
   }
 })();
 </script>
-</body></html>
+<script>document.addEventListener('DOMContentLoaded',()=>{if(typeof refreshQuizWeekOptions==='function')refreshQuizWeekOptions();});</script></body></html>
