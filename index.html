@@ -1976,7 +1976,7 @@ function loadPackage(p){
  const base=['麥當勞','櫃台','座位','餐盤','菜單','漢堡','薯條','雞塊','可樂','果汁','番茄醬','點餐','拿餐盤','丟垃圾'];
  base.filter(w=>!labels.includes(w)).forEach(w=>custom.cardOverrides[w]={hidden:true});
  words.forEach(x=>custom.cardOverrides[x.text]={emoji:String(x.emoji||'💬')});
- custom.practiceSettings={...(custom.practiceSettings||{}),count:s.count==='all'?'all':Number(s.count)||5,openQuizWeeks:s.weeks.map(Number),readDisplayMode:s.readMode==='textToImage'?'textToImage':'imageToText',listenAnswerMode:['image','text','mixed'].includes(s.listenMode)?s.listenMode:'image',readWords:labels,listenWords:labels};
+ custom.practiceSettings={...(custom.practiceSettings||{}),count:s.count==='all'?'all':Number(s.count)||5,openQuizWeeks:s.weeks.map(Number),readDisplayMode:s.readMode==='textToImage'?'textToImage':'imageToText',listenAnswerMode:['image','text','mixed'].includes(s.listenMode)?s.listenMode:'image',readWords:(Array.isArray(b.readWords)?b.readWords.filter(x=>x.enabled!==false).map(x=>String(x.text)).filter(x=>labels.includes(x)):labels),listenWords:(Array.isArray(b.listenWords)?b.listenWords.filter(x=>x.enabled!==false).map(x=>String(x.text)).filter(x=>labels.includes(x)):labels)};
  const choices=document.getElementById('choices');if(choices)choices.value=String(s.choices);
  const amount=document.getElementById('sessionQuestionCount');if(amount){const val=String(s.count||5);amount.value=[...amount.options].some(o=>o.value===val)?val:'5'}
  aacSentenceQuestions.splice(0,aacSentenceQuestions.length,...b.sentences.filter(q=>q.enabled!==false&&s.weeks.map(Number).includes(Number(q.week))&&Array.isArray(q.parts)&&q.parts.length>=2&&q.parts.length<=Number(s.sentenceMax||5)&&q.parts.length<=5).map(q=>({...q,mode:s.sentenceDistractors?'distractors':'correct'})));
@@ -2229,4 +2229,25 @@ function init(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
-</script></body></html>
+</script><script id="aac-cloud-student-auto-v1">(()=>{'use strict';
+const API='https://stbdazhruoigsmzaegrb.supabase.co',PUB='sb_publishable_md6a110zNzC7RN_PcL-BFA_R4zqTQVG',PACK='wenlin_aac_phase2_offline_package_v1',CACHE='wenlin_aac_cloud_assignment_versions_v1';let busy=false,lastCode='',lastCheck=0;
+const $=id=>document.getElementById(id);
+function note(t){let n=$('aacCloudStudentNotice');if(n)n.textContent=t}
+function activeCode(){const c=$('student')?.value?.trim();return c&&document.documentElement.classList.contains('aac-paired')&&Array.isArray(window.aacAuthorizedStudentCodes)&&window.aacAuthorizedStudentCodes.includes(c)?c:''}
+function cached(){try{return JSON.parse(localStorage.getItem(CACHE)||'{}')}catch{return {}}}
+function safePack(){try{return JSON.parse(localStorage.getItem(PACK)||'null')}catch{return null}}
+async function load(force=false){const code=activeCode();if(!code||busy)return;if(!force&&code===lastCode&&Date.now()-lastCheck<60000)return;lastCode=code;lastCheck=Date.now();busy=true;try{
+ const res=await fetch(API+'/rest/v1/aac_learning_assignments?student_code=eq.'+encodeURIComponent(code)+'&select=student_code,settings,bank,version,updated_at',{headers:{apikey:PUB}});const rows=await res.json();if(!res.ok)throw Error(rows?.message||'HTTP '+res.status);if(!Array.isArray(rows))throw Error('回應格式錯誤');
+ if(!rows.length){const previous=safePack();if(previous?.student?.id&&previous.student.id!==code){localStorage.removeItem(PACK);location.reload();return}note('此學生尚未發布雲端設定，維持原有設定。');return}
+ const x=rows[0];if(!x.settings||!x.bank||!['lessons','words','questions','sentences'].every(k=>Array.isArray(x.bank[k])))throw Error('雲端教材不完整');const p={format:'wenlin-aac-offline-assignment-v1',version:1,student:{id:code,label:code},settings:x.settings,bank:x.bank};const old=safePack();const v=cached();if(old?.student?.id===code&&v[code]===x.version){note('✅ 已使用教師發布的最新設定');return}
+ // 避免在練習中途重載；下次開啟或切換學生後再套用。
+ if(typeof tab==='string'&&['quiz','read','listen','sentenceTab'].includes(tab)&&!force){note('☁️ 有新的教師設定，下次進入學習時更新');return}
+ localStorage.setItem(PACK,JSON.stringify(p));v[code]=x.version;localStorage.setItem(CACHE,JSON.stringify(v));location.reload();
+ }catch(e){note('雲端設定暫時無法取得，沿用既有設定：'+e.message)}finally{busy=false}}
+const indicator=document.createElement('div');indicator.id='aacCloudStudentNotice';indicator.style.cssText='font-size:13px;color:#bfd5e8;margin:3px 0 6px';const nav=$('nav');if(nav)nav.insertAdjacentElement('afterend',indicator);
+// 每次選擇學生時讀取；切換到閱讀頁／認識語詞時安全檢查更新。
+$('student')?.addEventListener('change',()=>{lastCode='';load(true)});
+document.addEventListener('click',e=>{if(e.target.closest?.('#studentCards button'))setTimeout(()=>load(true),80);else if(e.target.closest?.('#nav button[data-tab="lesson"],#nav button[data-tab="wordIntro"]'))setTimeout(()=>load(),80)});
+window.addEventListener('focus',()=>load());setInterval(()=>{if(typeof tab==='string'&&!['quiz','read','listen','sentenceTab'].includes(tab))load()},60000);
+setTimeout(()=>load(),500);
+})();</script></body></html>
