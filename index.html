@@ -539,23 +539,295 @@ body.aac-manage-view #settings>.aac-settings-section:not(#aacManageArea),body.aa
 body.aac-manage-view #aacManageArea{display:block!important}
 body:not(.aac-manage-view) #aacManageArea{display:none!important}
 #aacManageContents .aac-settings-section{display:block!important}
-</style></head><body><header><div><h1 id="aacSiteTitle">🍔 飲食生活 AAC 溝通與學習</h1><small id="aacSiteSubtitle">文林國小特教班｜第 8～14 週｜網站學生版｜照片僅存本機</small></div><div class="aac-header-actions" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><label class="aac-core-toggle" for="aacCoreVisible"><input id="aacCoreVisible" type="checkbox" checked onchange="aacSetCoreVisible(this.checked)" aria-controls="corePanel"><span>顯示核心詞彙板</span></label><button id="aacHeaderVoice" onclick="switchTab('settings')">⚙️ 設定</button></div></header><main class="wrap"><nav class="nav" id="nav"></nav><div class="fields"><label>練習者代號 <input id="student" placeholder="例如：測試01" maxlength="25" style="width:150px"></label><label id="aacChoicesField">選項數 <select id="choices"><option>2</option><option>3</option><option selected>4</option></select></label><label id="aacQuestionCountField">練習題數 <select id="sessionQuestionCount" aria-label="每次練習題數"><option value="3">3 題</option><option value="5" selected>5 題</option><option value="10">10 題</option><option value="15">15 題</option><option value="all">全部</option></select></label></div>
+
+/* === v7 版面優化：不更動原始設定資料與功能，只調整顯示 === */
+#p2ActivePackage{display:none!important}
+body.aac25-settings-open #aacHeaderVoice{display:none!important}
+body.aac25-settings-open #nav,
+body.aac25-settings-open > main.wrap > .fields{display:none!important}
+body.aac25-settings-open #settings{display:block!important}
+body.aac25-settings-open #settings.hide{display:block!important}
+body.aac25-settings-open .wrap{max-width:1200px}
+header{position:sticky;top:0;z-index:20}
+.wrap{width:min(1400px,100%);margin:0 auto;padding:14px 16px 24px}
+.nav{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.nav button{min-height:64px;padding:10px 12px;font-weight:700}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(180px,1fr));gap:12px;align-items:end;margin:10px 0 14px}
+.fields label{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fields input,.fields select{width:100%;min-width:0}
+.aac-side-layout{display:grid;grid-template-columns:minmax(280px,1fr) minmax(360px,1.15fr);gap:18px;align-items:stretch}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#settings{max-width:1100px;margin:0 auto}
+.aac25-settings-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.aac25-back-btn{min-width:180px}
+#aacSettingTabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+#aacSettingTabs button{width:100%;min-height:54px;font-weight:700}
+.aac-settings-section{margin-bottom:14px}
+.aac-settings-toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.aac-settings-save{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+#aacManageLogin label{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+#corePanel h2,.strip h2{font-size:clamp(18px,2.4vw,24px)}
+footer{padding:14px 16px;text-align:center}
+@media (max-width:1200px){
+  .nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:900px){
+  header{padding:14px 16px}
+  .wrap{padding:12px}
+  .fields{grid-template-columns:repeat(2,minmax(160px,1fr))}
+  .aac-side-layout{grid-template-columns:1fr}
+  .answers{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  header{padding:12px}
+  .aac-header-actions{width:100%;justify-content:space-between!important}
+  .nav{grid-template-columns:1fr 1fr}
+  .nav button{min-height:56px}
+  .fields{grid-template-columns:1fr}
+  .answers{grid-template-columns:1fr!important}
+  #settings{max-width:none}
+  .aac25-settings-heading{align-items:stretch}
+  .aac25-back-btn{width:100%}
+  #aacSettingTabs{grid-template-columns:1fr}
+  .aac-settings-toolbar,.aac-settings-save{flex-direction:column;align-items:stretch}
+  .aac-settings-toolbar > *, .aac-settings-save > *{width:100%}
+}
+</style>
+<style id="aac-v8-practice-toolbar">
+/* v8: 練習控制列只變更排版，不改欄位、題型、按鈕事件或儲存機制 */
+main.wrap > .fields{
+ display:flex!important;flex-flow:row nowrap!important;align-items:center!important;
+ justify-content:flex-start!important;gap:clamp(10px,1.4vw,20px)!important;
+ margin:10px 0 14px!important;padding:11px 14px!important;
+ background:#203146;border:1px solid #435e74;border-radius:14px;
+ width:100%;min-width:0;
+}
+main.wrap > .fields > label{
+ display:inline-flex!important;flex:0 0 auto!important;flex-flow:row nowrap!important;
+ align-items:center!important;justify-content:flex-start!important;
+ gap:8px!important;min-width:0!important;white-space:nowrap;
+ font-size:clamp(14px,1.15vw,17px);font-weight:650;
+}
+main.wrap > .fields > label:first-child{margin-right:auto}
+main.wrap > .fields #student{
+ width:clamp(100px,10vw,150px)!important;min-width:0!important;
+ padding:9px 10px!important;flex:0 0 auto!important;
+}
+main.wrap > .fields #changeStudentBtn{
+ width:max-content!important;flex:0 0 auto!important;
+ white-space:nowrap!important;padding:9px 13px!important;
+ min-height:42px!important;line-height:1.2!important;
+}
+main.wrap > .fields select{
+ width:clamp(78px,8.4vw,124px)!important;min-width:0!important;
+ max-width:none!important;flex:0 0 auto!important;
+ padding:9px 10px!important;min-height:42px!important;
+}
+/* 其他功能區原有 fields 恢復適性排版，不被 v7 通用網格規則影響。 */
+.panel .fields,.aac-settings-section .fields{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.panel .fields label,.aac-settings-section .fields label{display:inline-flex;flex-direction:row;align-items:center;gap:8px}
+.panel .fields input,.panel .fields select,.aac-settings-section .fields input,.aac-settings-section .fields select{width:auto}
+/* 平板窄寬仍先維持一行；空間不夠則改為上下整齊排列，不擠壓文字。 */
+@media (max-width:950px){
+ main.wrap > .fields{flex-wrap:wrap!important;gap:10px 16px!important}
+ main.wrap > .fields > label:first-child{flex:1 1 100%!important;margin-right:0}
+ main.wrap > .fields > label:not(:first-child){flex:0 0 auto!important}
+ main.wrap > .fields #student{width:135px!important}
+ main.wrap > .fields select{width:120px!important}
+}
+@media (max-width:570px){
+ main.wrap > .fields{padding:10px!important;gap:10px!important}
+ main.wrap > .fields > label:first-child{gap:7px!important;flex-wrap:wrap!important;white-space:normal}
+ main.wrap > .fields #student{width:115px!important}
+ main.wrap > .fields #changeStudentBtn{padding:9px 10px!important}
+ main.wrap > .fields > label:not(:first-child){flex:1 1 calc(50% - 10px)!important;justify-content:space-between!important}
+ main.wrap > .fields select{width:96px!important;max-width:53%!important}
+}
+</style>
+<style id="aac-sentence-fit-v9">
+/* v9：僅句條排列視覺壓縮，保留題目、題型、按鈕與所有 JS 原邏輯 */
+#sentenceTab:not(.hide){
+  padding:10px 14px 10px!important;
+  overflow-x:hidden!important;
+  overflow-y:auto!important;
+  margin-bottom:5px!important;
+  scroll-padding-bottom:14px;
+}
+#sentenceTab h2{margin:0 0 3px!important;line-height:1.2!important}
+#sentenceTab .aac-sentence-workspace{
+  max-width:1100px!important;
+  gap:3px!important;
+  padding-bottom:0!important;
+}
+#sentenceTab .aac-sentence-caption{
+  margin:0!important;
+  line-height:1.1!important;
+  min-height:0!important;
+  font-size:clamp(15px,1.3vw,18px)!important;
+}
+#sentenceTab .aac-sentence-model{
+  gap:7px!important;
+  padding:5px 8px!important;
+  min-height:0!important;
+  margin:0!important;
+  border-width:2px!important;
+}
+#sentenceTab .aac-sentence-model .aac-token-chip{
+  min-height:58px!important;
+  max-width:190px!important;
+  padding:3px 8px!important;
+  gap:2px!important;
+}
+#sentenceTab .aac-sentence-slots{
+  min-height:0!important;
+  gap:7px!important;
+  margin:0!important;
+}
+#sentenceTab .aac-sentence-slot{
+  min-height:60px!important;
+  padding:3px 7px!important;
+}
+#sentenceTab .aac-sentence-feedback{
+  min-height:0!important;
+  margin:0!important;
+  line-height:1.12!important;
+}
+#sentenceTab .aac-sentence-feedback:empty{display:none!important}
+#sentenceTab .aac-sentence-pieces{gap:7px!important;margin:0!important}
+#sentenceTab .aac-sentence-piece{
+  min-height:66px!important;
+  padding:3px 8px!important;
+}
+#sentenceTab .aac-token-icon,
+#sentenceTab .aac-sentence-model .aac-token-icon,
+#sentenceTab .aac-sentence-piece .aac-token-icon,
+#sentenceTab .aac-sentence-slot .aac-token-icon{
+  font-size:clamp(25px,3.5vh,36px)!important;
+}
+#sentenceTab .aac-token-word,
+#sentenceTab .aac-sentence-model .aac-token-word,
+#sentenceTab .aac-sentence-piece .aac-token-word,
+#sentenceTab .aac-sentence-slot .aac-token-word{
+  font-size:clamp(18px,2.7vh,24px)!important;
+}
+#sentenceTab .aac-sentence-bottom{
+  position:static!important;
+  margin:2px 0 0!important;
+  padding:2px 0!important;
+  background:none!important;
+  min-height:0!important;
+}
+#sentenceTab .aac-sentence-bottom button{min-height:38px!important;padding:3px 11px!important}
+#sentenceTab .aac-sentence-voice{min-height:34px!important;min-width:40px!important;padding:3px 8px!important}
+@media(max-width:650px){
+  #sentenceTab:not(.hide){padding:8px!important}
+  #sentenceTab .aac-sentence-model .aac-token-chip,
+  #sentenceTab .aac-sentence-slot,
+  #sentenceTab .aac-sentence-piece{min-height:55px!important}
+  #sentenceTab .aac-sentence-model{padding:4px!important}
+  #sentenceTab .aac-sentence-bottom{gap:5px!important}
+  #sentenceTab .aac-sentence-bottom button{padding:5px 7px!important;font-size:13px!important}
+}
+@media(max-height:760px) and (min-width:651px){
+  #sentenceTab .aac-sentence-model .aac-token-chip,
+  #sentenceTab .aac-sentence-slot,
+  #sentenceTab .aac-sentence-piece{min-height:52px!important}
+  #sentenceTab .aac-token-icon,
+  #sentenceTab .aac-sentence-model .aac-token-icon,
+  #sentenceTab .aac-sentence-piece .aac-token-icon,
+  #sentenceTab .aac-sentence-slot .aac-token-icon{font-size:25px!important}
+  #sentenceTab .aac-token-word,
+  #sentenceTab .aac-sentence-model .aac-token-word,
+  #sentenceTab .aac-sentence-piece .aac-token-word,
+  #sentenceTab .aac-sentence-slot .aac-token-word{font-size:19px!important}
+}
+</style>
+<style id="aac-v10-compact-practice-css">
+/* v10 僅優化顯示：縮減留白、突出問題及選項、播放鍵緊靠問題前方 */
+#quiz:not(.hide),#read:not(.hide),#listen:not(.hide){
+  gap:5px!important;padding:clamp(10px,1.15vw,17px)!important;
+  margin-bottom:8px!important;
+}
+#quiz h2,#read h2,#listen h2{margin:0 0 2px!important;font-size:clamp(22px,2vw,29px)!important}
+#quiz .aac-quiz-progress,#read .aac-quiz-progress,#listen .aac-quiz-progress{min-height:0!important;margin:0!important;line-height:1.3;font-size:clamp(15px,1.2vw,18px)}
+#quiz .aac-quiz-question-row{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:stretch;gap:10px;margin:7px 0 6px;min-width:0}
+#quiz .aac-quiz-repeat{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:10px 12px!important;min-width:105px;min-height:83px!important;background:#176b9d!important;border:2px solid #7bc8ed!important;font-size:25px!important;font-weight:800;color:white!important;line-height:1.1}
+#quiz .aac-quiz-repeat span{font-size:15px;white-space:nowrap}
+#quiz #question{display:flex;align-items:center;justify-content:center;min-height:83px!important;margin:0!important;padding:12px 16px!important;font-size:clamp(25px,2.7vw,39px)!important;line-height:1.35!important;letter-spacing:.02em;text-align:center;border:2px solid #a4d3f0;overflow-wrap:anywhere}
+#quiz .answers,#read .answers,#listen .answers{margin:4px 0 5px!important;gap:clamp(8px,1vw,13px)!important}
+#quiz .answers button,#read .answers button,#listen .answers button{box-shadow:0 3px 0 #0003!important;border-width:3px!important;font-size:clamp(23px,2.3vw,33px)!important;line-height:1.2!important;padding:clamp(8px,1.05vw,14px)!important}
+#quiz .answers button{min-height:clamp(100px,15vh,168px)!important}
+#read .answers button{min-height:clamp(80px,11vh,120px)!important}
+#listen .answers button{min-height:clamp(105px,17vh,174px)!important}
+#quiz .status,#read .status,#listen .status{min-height:22px!important;margin:0!important;font-size:clamp(18px,1.8vw,23px)!important}
+#quiz .aac-page-arrows,#read .aac-page-arrows,#listen .aac-page-arrows{margin-top:1px!important;padding-top:2px!important}
+#read .aac-side-layout,#listen .aac-side-layout{gap:clamp(10px,1vw,16px)!important}
+#read .aac-side-label,#listen .aac-side-label{margin:0 0 5px!important}
+#readPicture{margin:0 auto 2px!important}
+@media(max-width:750px){
+  #quiz .aac-quiz-question-row{gap:7px;margin:5px 0}
+  #quiz .aac-quiz-repeat{min-width:70px;min-height:74px!important;padding:7px!important;font-size:22px!important}
+  #quiz .aac-quiz-repeat span{font-size:12px;white-space:normal}
+  #quiz #question{min-height:74px!important;padding:8px 10px!important;font-size:clamp(21px,4.7vw,32px)!important}
+  #quiz .answers button,#read .answers button,#listen .answers button{font-size:clamp(20px,4.4vw,27px)!important}
+}
+@media(max-width:480px){
+  #quiz .aac-quiz-question-row{grid-template-columns:66px minmax(0,1fr)}
+  #quiz .aac-quiz-repeat{min-width:0;width:66px;padding:6px 3px!important}
+  #quiz .answers button{min-height:90px!important}
+  #read .answers button{min-height:72px!important}
+}
+@media(max-height:750px) and (min-width:751px){
+  #quiz .answers button{min-height:94px!important}
+  #listen .answers button{min-height:95px!important}
+  #quiz .aac-quiz-repeat,#quiz #question{min-height:75px!important}
+}
+</style>
+
+<style id="aac-sentence-compact-focus-v11">
+/* 僅視覺調整句條排列；保留原答案資料、點擊與朗讀邏輯 */
+#sentenceTab:not(.hide){padding:10px 14px 8px!important;margin-bottom:4px!important}
+#sentenceTab h2{font-size:clamp(21px,2vw,28px)!important;margin-bottom:5px!important}
+#sentenceTab .aac-sentence-workspace{max-width:1250px!important;gap:5px!important;padding-bottom:0!important}
+#sentenceTab .aac-sentence-caption{font-size:clamp(15px,1.5vw,19px)!important;font-weight:850!important;line-height:1.15!important;margin:0!important}
+#sentenceTab .aac-sentence-model{padding:6px!important;gap:8px!important;background:#e7f6ff!important;border-color:#91c7e6!important}
+#sentenceTab .aac-sentence-model .aac-token-chip{background:#fff!important;border:2px solid #8abfdf!important;flex-basis:150px!important;width:150px!important;min-height:73px!important;padding:6px!important}
+#sentenceTab .aac-sentence-slots{gap:8px!important;margin:0!important}
+#sentenceTab .aac-sentence-slot{min-height:75px!important;background:#192e44!important;border-color:#a7d4ef!important;border-width:2px!important}
+#sentenceTab .aac-sentence-slot.filled{background:#d9efff!important;border-color:#4ca3db!important}
+#sentenceTab .aac-sentence-pieces{gap:9px!important;margin:0!important}
+#sentenceTab .aac-sentence-piece{flex-basis:170px!important;width:170px!important;min-height:86px!important;background:#fff!important;color:#143754!important;border:3px solid #90c3e4!important;box-shadow:0 2px 0 #0003!important;padding:7px!important}
+#sentenceTab .aac-sentence-piece:focus-visible{outline:4px solid #ffd460!important;outline-offset:2px}
+#sentenceTab .aac-sentence-model .aac-token-icon,#sentenceTab .aac-sentence-slot .aac-token-icon,#sentenceTab .aac-sentence-piece .aac-token-icon{font-size:clamp(34px,3.8vh,46px)!important}
+#sentenceTab .aac-sentence-model .aac-token-word,#sentenceTab .aac-sentence-slot .aac-token-word,#sentenceTab .aac-sentence-piece .aac-token-word{font-size:clamp(22px,2.9vh,30px)!important;line-height:1.12!important}
+#sentenceTab .aac-sentence-feedback:empty{display:none!important}
+#sentenceTab .aac-sentence-bottom{margin-top:4px!important;padding:0!important;gap:7px!important}
+#sentenceTab .aac-sentence-bottom button{min-height:42px!important}
+@media(max-width:700px){
+ #sentenceTab:not(.hide){padding:8px!important}
+ #sentenceTab .aac-sentence-workspace{gap:5px!important}
+ #sentenceTab .aac-sentence-model .aac-token-chip,#sentenceTab .aac-sentence-slot,#sentenceTab .aac-sentence-piece{flex-basis:44%!important;width:44%!important;min-width:0!important;min-height:68px!important}
+ #sentenceTab .aac-sentence-model .aac-token-icon,#sentenceTab .aac-sentence-slot .aac-token-icon,#sentenceTab .aac-sentence-piece .aac-token-icon{font-size:32px!important}
+ #sentenceTab .aac-sentence-model .aac-token-word,#sentenceTab .aac-sentence-slot .aac-token-word,#sentenceTab .aac-sentence-piece .aac-token-word{font-size:21px!important}
+}
+</style>
+</head><body><header><div><h1 id="aacSiteTitle">🍔 飲食生活 AAC 溝通與學習</h1><small id="aacSiteSubtitle">文林國小特教班｜第 8～14 週｜網站學生版｜照片僅存本機</small></div><div class="aac-header-actions" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><label class="aac-core-toggle" for="aacCoreVisible"><input id="aacCoreVisible" type="checkbox" checked onchange="aacSetCoreVisible(this.checked)" aria-controls="corePanel"><span>顯示核心詞彙板</span></label><button id="aacHeaderVoice" onclick="switchTab('settings')">⚙️ 設定</button></div></header><main class="wrap"><nav class="nav" id="nav"></nav><div class="fields"><label>練習者代號 <input id="student" placeholder="例如：測試01" maxlength="25" style="width:150px"></label><label id="aacChoicesField">選項數 <select id="choices"><option>2</option><option>3</option><option selected>4</option></select></label><label id="aacQuestionCountField">練習題數 <select id="sessionQuestionCount" aria-label="每次練習題數"><option value="3">3 題</option><option value="5" selected>5 題</option><option value="10">10 題</option><option value="15">15 題</option><option value="all">全部</option></select></label></div>
 <section class="panel hide" id="talk" aria-hidden="true"><h2>💬 自由溝通｜點圖卡組句子</h2><div class="bar" id="sentence">請點選圖卡</div><div class="actions"><button class="primary" onclick="speak(tokens.join(''))">🔊 朗讀整句</button><button onclick="tokens.pop();renderSentence()">↶ 刪除一詞</button><button onclick="tokens=[];renderSentence()">清除句子</button></div><div class="actions" aria-label="常用動作"><button onclick="pickWithoutVoice('喝')">🥤 喝</button><button onclick="pickWithoutVoice('吃')">🍽️ 吃</button><button onclick="pickWithoutVoice('要')">🙋 要</button></div><div class="grid hide" id="board"></div></section>
 <section class="panel hide" id="sentenceTab" aria-label="句條排列練習">
 <h2>🧩 句條排列 <span id="aacSentenceProgress" class="aac-sentence-count">第 1 / 10 題</span></h2>
 <div class="aac-sentence-workspace">
- <div class="aac-sentence-caption">完整句子示範 <button class="aac-sentence-voice" onclick="aacSentenceSayModel()" aria-label="朗讀示範句">🔊</button></div>
+ <div class="aac-sentence-caption">示範 <button class="aac-sentence-voice" onclick="aacSentenceSayModel()" aria-label="朗讀示範句">🔊</button></div>
  <div id="aacSentenceModel" class="aac-sentence-model">我要漢堡。</div>
  <div class="aac-sentence-caption">我的句子</div>
  <div id="aacSentenceSlots" class="aac-sentence-slots" aria-live="polite"></div>
  <div id="aacSentenceFeedback" class="aac-sentence-feedback" role="status" aria-live="polite"></div>
- <div class="aac-sentence-caption">選擇句條（依序點選）</div>
+ <div class="aac-sentence-caption">選擇句條</div>
  <div id="aacSentencePieces" class="aac-sentence-pieces"></div>
  <div class="aac-sentence-bottom"><button onclick="aacSentenceUndo()" title="退回一個句條">↶ 返回一格</button><button onclick="aacSentenceClear()">重新排列</button><button id="aacSentencePrev" class="aac-arrow" onclick="aacSentenceMove(-1)" aria-label="上一題">❮</button><button id="aacSentenceNext" class="aac-arrow" onclick="aacSentenceMove(1)" aria-label="下一題">❯</button></div>
 </div>
 <div id="stems" hidden></div><div id="composed" hidden></div><div id="sentenceOptions" hidden></div>
 </section>
-<section class="panel hide" id="quiz"><h2>❓ 回答問題</h2><div class="fields" style="display:none!important" aria-hidden="true"><label>選擇週次 <select id="quizWeek" onchange="changeQuizWeek()"><option value="8">第 8 週｜用餐場所</option><option value="9">第 9 週｜認識菜單與食物</option><option value="10">第 10 週｜選餐與點餐</option><option value="11">第 11 週｜等候與取餐</option><option value="12">第 12 週｜用餐整理</option><option value="13">第 13 週｜生活情境應用</option><option value="14">第 14 週｜單元總複習</option></select></label></div><div class="aac-quiz-progress" id="quizProgress"></div><div class="bar question" id="question"></div><div class="actions"><button onclick="speak(activeQ.q)">🔊 再聽一次</button></div><div class="answers" id="quizAnswers"></div><div class="status" id="quizStatus" aria-live="polite"></div><div class="aac-page-arrows" aria-label="切換練習題目"><button class="aac-arrow" title="上一題" aria-label="上一題" onclick="aacPreviousPractice('quiz')">❮</button><button class="aac-arrow" title="下一題" aria-label="下一題" onclick="nextQuestion()">❯</button></div><div id="quizCount" class="muted" style="display:none!important"></div></section>
+<section class="panel hide" id="quiz"><h2>❓ 回答問題</h2><div class="fields" style="display:none!important" aria-hidden="true"><label>選擇週次 <select id="quizWeek" onchange="changeQuizWeek()"><option value="8">第 8 週｜用餐場所</option><option value="9">第 9 週｜認識菜單與食物</option><option value="10">第 10 週｜選餐與點餐</option><option value="11">第 11 週｜等候與取餐</option><option value="12">第 12 週｜用餐整理</option><option value="13">第 13 週｜生活情境應用</option><option value="14">第 14 週｜單元總複習</option></select></label></div><div class="aac-quiz-progress" id="quizProgress"></div><div class="aac-quiz-question-row"><button type="button" class="aac-quiz-repeat" onclick="speak(activeQ.q)" aria-label="再聽一次問題" title="再聽一次問題">🔊<span>再聽一次</span></button><div class="bar question" id="question"></div></div><div class="answers" id="quizAnswers"></div><div class="status" id="quizStatus" aria-live="polite"></div><div class="aac-page-arrows" aria-label="切換練習題目"><button class="aac-arrow" title="上一題" aria-label="上一題" onclick="aacPreviousPractice('quiz')">❮</button><button class="aac-arrow" title="下一題" aria-label="下一題" onclick="nextQuestion()">❯</button></div><div id="quizCount" class="muted" style="display:none!important"></div></section>
 <section class="panel hide" id="listen"><h2>🔊 聽音分辨</h2><div class="aac-quiz-progress" id="listenProgress"></div><div class="aac-side-layout"><div class="aac-side-question aac-listen-question"><div class="aac-side-label">聽語詞</div><div class="actions"><button class="primary" onclick="speak(activeWord)">🔊 播放語詞</button></div></div><div class="aac-side-options"><div class="aac-side-label" id="listenAnswerLabel">選出正確答案</div><div class="answers" id="listenAnswers"></div></div></div><div class="status" id="listenStatus" aria-live="polite"></div><div class="aac-page-arrows" aria-label="切換練習題目"><button class="aac-arrow" title="上一題" aria-label="上一題" onclick="aacPreviousPractice('listen')">❮</button><button class="aac-arrow" title="下一題" aria-label="下一題" onclick="nextWord()">❯</button></div></section>
 <section class="panel hide" id="read"><h2>🧩 語詞分辨</h2><div class="aac-quiz-progress" id="readProgress"></div><div class="aac-side-layout"><div class="aac-side-question"><div class="aac-side-label">看圖片</div><div id="readPicture" style="text-align:center"></div></div><div class="aac-side-options"><div class="aac-side-label" id="readAnswerLabel">選語詞</div><div class="answers" id="readAnswers"></div></div></div><div class="status" id="readStatus" aria-live="polite"></div><div class="aac-page-arrows" aria-label="切換練習題目"><button class="aac-arrow" title="上一題" aria-label="上一題" onclick="aacPreviousPractice('read')">❮</button><button class="aac-arrow" title="下一題" aria-label="下一題" onclick="nextWord()">❯</button></div></section>
 <section class="panel hide" id="wordIntro"><h2>📚 認識語詞</h2><div class="lesson"><div id="wordIntroPic"></div><p id="wordIntroText"></p></div><div class="actions"><button class="aac-arrow" aria-label="上一頁" title="上一頁" onclick="wordIntroStep(-1)">❮</button><button class="primary" onclick="speak(wordIntroCurrent())">🔊 朗讀語詞</button><button class="aac-arrow" aria-label="下一頁" title="下一頁" onclick="wordIntroStep(1)">❯</button></div><div class="muted" id="wordIntroProgress"></div></section>
@@ -633,7 +905,7 @@ function aacListenAnswer(w,index,opts){
  return showImage?picture(w):'<span class="aac-listen-word">'+esc(cardLabel(w))+'</span>';
 }
 function drawAnswers(el,correct,opts,mode){answered=false;attempts=0;$(el).innerHTML=opts.map(w=>'<button data-answer="'+esc(w)+'" onclick="choose(this,'+JSON.stringify(correct).replace(/"/g,'&quot;')+','+JSON.stringify(mode).replace(/"/g,'&quot;')+')">'+(mode==='read'?(aacReadMode()==='textToImage'?picture(w):esc(cardLabel(w))):mode==='listen'?aacListenAnswer(w,opts.indexOf(w),opts):picture(w)+(mode==='quiz'?'<div>'+esc(w)+'</div>':''))+'</button>').join('')}
-function choose(btn,correct,mode){if(answered)return;const w=btn.dataset.answer;const ok=w===correct;attempts++;btn.classList.add(ok?'good':'bad');const status=$(mode+'Status');if(ok){answered=true;btn.insertAdjacentHTML('beforeend','<span class="answer-mark goodmark" aria-label="答對">✓</span>');status.textContent='✓ 答對了！'+correct;[...btn.parentElement.children].forEach(x=>x.disabled=true);speak('答對了！這是'+correct);saveRecord(mode,correct,w,attempts===1);if(mode==='quiz'&&practiceIndex===practiceSession.length-1){const doneIndex=practiceIndex;setTimeout(()=>{if(tab==='quiz'&&practiceMode==='quiz'&&!practiceFinished&&practiceIndex===doneIndex){practiceIndex++;renderQuiz()}},1400)}if(mode==='read'||mode==='listen'){const finishedIndex=practiceIndex;setTimeout(()=>{if(tab!==mode||practiceFinished||practiceMode!==mode||practiceIndex!==finishedIndex||!answered)return;practiceIndex++;if(mode==='read')renderRead();else renderListen();},1100)}}else{btn.insertAdjacentHTML('beforeend','<span class="answer-mark badmark" aria-label="再試一次">×</span>');btn.disabled=true;status.textContent='× 沒關係，加油！再試一次！';speak('沒關係，加油！再找找看。');if([...btn.parentElement.children].every(x=>x.disabled)){const right=[...btn.parentElement.children].find(x=>x.dataset.answer===correct);if(right)right.disabled=false;}}}
+function choose(btn,correct,mode){if(answered)return;const w=btn.dataset.answer;const ok=w===correct;attempts++;btn.classList.add(ok?'good':'bad');const status=$(mode+'Status');if(ok){answered=true;btn.insertAdjacentHTML('beforeend','<span class="answer-mark goodmark" aria-label="答對">✓</span>');status.textContent='✓ 答對了！'+correct;[...btn.parentElement.children].forEach(x=>x.disabled=true);speak('答對了！這是'+correct);saveRecord(mode,correct,w,attempts===1);if(mode==='quiz'){const doneIndex=practiceIndex;setTimeout(()=>{if(tab==='quiz'&&practiceMode==='quiz'&&!practiceFinished&&practiceIndex===doneIndex&&answered){practiceIndex++;renderQuiz()}},1100)}if(mode==='read'||mode==='listen'){const finishedIndex=practiceIndex;setTimeout(()=>{if(tab!==mode||practiceFinished||practiceMode!==mode||practiceIndex!==finishedIndex||!answered)return;practiceIndex++;if(mode==='read')renderRead();else renderListen();},1100)}}else{btn.insertAdjacentHTML('beforeend','<span class="answer-mark badmark" aria-label="再試一次">×</span>');btn.disabled=true;status.textContent='× 沒關係，加油！再試一次！';speak('沒關係，加油！再找找看。');if([...btn.parentElement.children].every(x=>x.disabled)){const right=[...btn.parentElement.children].find(x=>x.dataset.answer===correct);if(right)right.disabled=false;}}}
 const CLOUD_URL_KEY='aac_cloud_function_url_v1';localStorage.removeItem(CLOUD_URL_KEY);
 let cloudBatch={mode:'',week:8,student:'',total:0,correct:0};
 function validCloudUrl(url){try{let u=new URL(url);return u.protocol==='https:'&&u.pathname.endsWith('/functions/v1/save-aac-practice')&&u.hostname.endsWith('.supabase.co')}catch{return false}}
