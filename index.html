@@ -1989,6 +1989,13 @@ function loadPackage(p){
  const info=document.getElementById('p2ActivePackage');if(info)info.textContent='🎯 '+label+' 的專屬練習｜'+s.choices+' 選 1｜'+s.count+' 題';
  if(typeof refreshQuizWeekOptions==='function')refreshQuizWeekOptions();
 }
+// 教師版雲端設定直接套用：不需整頁重載，也不會將前一位學生的題庫留在下一位。
+window.aacApplyCloudAssignment=function(p){
+ loadPackage(p);
+ if(typeof resetCloudBatch==='function')resetCloudBatch();
+ if(typeof window.p3RefreshStudentRecords==='function')window.p3RefreshStudentRecords();
+ return true;
+};
 // 教師未開放的功能，即使透過程式或誤觸也不應進入。
 const originalSwitch=window.switchTab;
 window.switchTab=function(target){
@@ -2230,25 +2237,39 @@ function init(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
-</script><script id="aac-cloud-student-auto-v1">(()=>{'use strict';
-const API='https://stbdazhruoigsmzaegrb.supabase.co',PUB='sb_publishable_md6a110zNzC7RN_PcL-BFA_R4zqTQVG',PACK='wenlin_aac_phase2_offline_package_v1',CACHE='wenlin_aac_cloud_assignment_versions_v1';let busy=false,lastCode='',lastCheck=0;
+</script><script id="aac-cloud-student-auto-v2">(()=>{'use strict';
+const API='https://stbdazhruoigsmzaegrb.supabase.co',PUB='sb_publishable_md6a110zNzC7RN_PcL-BFA_R4zqTQVG',PACK='wenlin_aac_phase2_offline_package_v1';
+let requestSeq=0,lastKey='',lastCheck=0;
 const $=id=>document.getElementById(id);
-function note(t){let n=$('aacCloudStudentNotice');if(n)n.textContent=t}
+function note(t){const n=$('aacCloudStudentNotice');if(n)n.textContent=t}
 function activeCode(){const c=$('student')?.value?.trim();return c&&document.documentElement.classList.contains('aac-paired')&&Array.isArray(window.aacAuthorizedStudentCodes)&&window.aacAuthorizedStudentCodes.includes(c)?c:''}
-function cached(){try{return JSON.parse(localStorage.getItem(CACHE)||'{}')}catch{return {}}}
 function safePack(){try{return JSON.parse(localStorage.getItem(PACK)||'null')}catch{return null}}
-async function load(force=false){const code=activeCode();if(!code||busy)return;if(!force&&code===lastCode&&Date.now()-lastCheck<60000)return;lastCode=code;lastCheck=Date.now();busy=true;try{
- const res=await fetch(API+'/rest/v1/aac_learning_assignments?student_code=eq.'+encodeURIComponent(code)+'&select=student_code,settings,bank,version,updated_at',{headers:{apikey:PUB}});const rows=await res.json();if(!res.ok)throw Error(rows?.message||'HTTP '+res.status);if(!Array.isArray(rows))throw Error('回應格式錯誤');
- if(!rows.length){const previous=safePack();if(previous?.student?.id&&previous.student.id!==code){localStorage.removeItem(PACK);location.reload();return}note('此學生尚未發布雲端設定，維持原有設定。');return}
- const x=rows[0];if(!x.settings||!x.bank||!['lessons','words','questions','sentences'].every(k=>Array.isArray(x.bank[k])))throw Error('雲端教材不完整');const p={format:'wenlin-aac-offline-assignment-v1',version:1,student:{id:code,label:code},settings:x.settings,bank:x.bank};const old=safePack();const v=cached();if(old?.student?.id===code&&v[code]===x.version){note('✅ 已使用教師發布的最新設定');return}
- // 避免在練習中途重載；下次開啟或切換學生後再套用。
- if(typeof tab==='string'&&['quiz','read','listen','sentenceTab'].includes(tab)&&!force){note('☁️ 有新的教師設定，下次進入學習時更新');return}
- localStorage.setItem(PACK,JSON.stringify(p));v[code]=x.version;localStorage.setItem(CACHE,JSON.stringify(v));location.reload();
- }catch(e){note('雲端設定暫時無法取得，沿用既有設定：'+e.message)}finally{busy=false}}
-const indicator=document.createElement('div');indicator.id='aacCloudStudentNotice';indicator.style.cssText='font-size:13px;color:#bfd5e8;margin:3px 0 6px';const nav=$('nav');if(nav)nav.insertAdjacentElement('afterend',indicator);
-// 每次選擇學生時讀取；切換到閱讀頁／認識語詞時安全檢查更新。
-$('student')?.addEventListener('change',()=>{lastCode='';load(true)});
-document.addEventListener('click',e=>{if(e.target.closest?.('#studentCards button'))setTimeout(()=>load(true),80);else if(e.target.closest?.('#nav button[data-tab="lesson"],#nav button[data-tab="wordIntro"]'))setTimeout(()=>load(),80)});
-window.addEventListener('focus',()=>load());setInterval(()=>{if(typeof tab==='string'&&!['quiz','read','listen','sentenceTab'].includes(tab))load()},60000);
-setTimeout(()=>load(),500);
+const indicator=document.createElement('div');indicator.id='aacCloudStudentNotice';indicator.setAttribute('role','status');indicator.style.cssText='font-size:15px;font-weight:700;color:#d8eafa;margin:5px 0 9px';const nav=$('nav');if(nav)nav.insertAdjacentElement('afterend',indicator);
+async function load(force=false){
+ const code=activeCode();if(!code){note('請先選擇學生，系統將讀取這位學生的專屬學習設定。');return}
+ const seq=++requestSeq;
+ if(!force&&lastKey===code&&Date.now()-lastCheck<15000)return;
+ lastKey=code;lastCheck=Date.now();note('☁️ 正在讀取 '+code+' 的教師設定…');
+ try{
+  const res=await fetch(API+'/rest/v1/aac_learning_assignments?student_code=eq.'+encodeURIComponent(code)+'&select=student_code,settings,bank,version,updated_at',{headers:{apikey:PUB,'Cache-Control':'no-cache'},cache:'no-store'});
+  const rows=await res.json().catch(()=>({}));if(!res.ok)throw Error(rows?.message||'HTTP '+res.status);if(!Array.isArray(rows))throw Error('回應格式錯誤');
+  if(seq!==requestSeq||activeCode()!==code)return;
+  if(!rows.length){note('⚠️ '+code+' 尚未發布雲端設定；請教師先為這位學生發布。');return}
+  const x=rows[0];if(!x.settings||!x.bank||!['lessons','words','questions','sentences'].every(k=>Array.isArray(x.bank[k])))throw Error('雲端教材不完整');
+  const p={format:'wenlin-aac-offline-assignment-v1',version:1,student:{id:code,label:code},settings:x.settings,bank:x.bank};
+  const old=safePack();const signature=JSON.stringify({settings:p.settings,bank:p.bank});const oldSignature=old?.student?.id===code?JSON.stringify({settings:old.settings,bank:old.bank}):'';
+  if(old?.student?.id!==code||signature!==oldSignature){
+   if(typeof window.aacApplyCloudAssignment!=='function')throw Error('學生版套用功能未就緒');
+   window.aacApplyCloudAssignment(p);
+   localStorage.setItem(PACK,JSON.stringify(p));
+  }
+  const version=x.version??'—';
+  note('✅ '+code+' 已套用教師最新設定｜雲端版本 '+version+'｜'+x.settings.choices+' 個選項｜每次 '+x.settings.count+' 題｜更新於 '+new Date(x.updated_at).toLocaleString('zh-TW'));
+ }catch(e){if(seq===requestSeq)note('⚠️ '+code+' 雲端同步失敗：'+e.message+'。請確認網路及教師是否已發布。')}
+}
+$('student')?.addEventListener('change',()=>load(true));
+document.addEventListener('click',e=>{if(e.target.closest?.('#studentCards button'))setTimeout(()=>load(true),80)});
+window.addEventListener('focus',()=>load(true));
+window.aacRefreshCloudAssignment=()=>load(true);
+setTimeout(()=>load(true),650);
 })();</script></body></html>
