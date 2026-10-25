@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-Hant"><head><!-- 整合版：以第三階段最新學生介面為主，保留六位數配對、個別教材匯入及本機紀錄匯出。未修改 Supabase；未開啟不安全的雲端成績寫入。 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>文林特教班｜飲食生活 AAC</title><style>html:not(.aac-paired) body > :not(#aacPairGate):not(script):not(style){visibility:hidden!important}html:not(.aac-paired) #aacPairGate{visibility:visible!important;display:flex!important}html:not(.aac-paired) #aacPairGate[hidden]{display:flex!important}</style><style>
+<!DOCTYPE html><html lang="zh-Hant"><head><!-- 整合版：以第三階段最新學生介面為主，保留六位數配對、個別教材匯入及本機紀錄匯出。未修改 Supabase；未開啟不安全的雲端成績寫入。 --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>文林 AAC｜學生共用入口・個別化學習</title><style>html:not(.aac-paired) body > :not(#aacPairGate):not(script):not(style){visibility:hidden!important}html:not(.aac-paired) #aacPairGate{visibility:visible!important;display:flex!important}html:not(.aac-paired) #aacPairGate[hidden]{display:flex!important}</style><style>
 :root{font-family:system-ui,"Microsoft JhengHei",sans-serif;color:#f8fbff;background:#172434}*{box-sizing:border-box}body{margin:0}header{background:#203b56;padding:17px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{margin:0;font-size:clamp(22px,3vw,34px)}header small{display:block;color:#d0e3f1;margin-top:4px}button,input,select,textarea{font:inherit}button{cursor:pointer;border:2px solid #61778c;background:#2b394c;color:white;border-radius:14px;padding:12px 16px}button:hover{border-color:#87c8ff}button:focus-visible{outline:4px solid #ffd460}button.active,.primary{background:#147ac0;border-color:#4fa7e8}button:disabled{opacity:.45;cursor:default}.wrap{max-width:1450px;margin:auto;padding:18px}.nav{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:15px}.nav button{font-size:17px}.panel{background:#243246;border:1px solid #4d6277;border-radius:18px;padding:19px;margin-bottom:16px}.hide{display:none!important}.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.tile{background:#f5f9fd;color:#122b42;border:3px solid #93c1db;border-radius:14px;padding:7px;min-height:132px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;font-size:21px;font-weight:800}.tile img{width:100%;height:96px;object-fit:contain;border-radius:8px;background:white}.tile .emo{font-size:53px}.tile.selected{border-color:#ffc83d;background:#fff4cc}.strip{background:#fff0c5;color:#2d3040;border-radius:16px;padding:14px;margin:15px 0}.strip h2{margin:0 0 10px;font-size:23px}.bar{background:#e8f5ff;color:#123249;border-radius:12px;padding:13px;min-height:58px;font-size:23px;margin:12px 0}.actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.core{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px}.core button{background:#e5f6ff;color:#15354b;border-color:#7ca9c4;font-size:18px;font-weight:800;min-height:84px;padding:5px}.core .emo{display:block;font-size:30px}.question{font-size:28px;font-weight:750}.answers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0}.answers button{min-height:160px;background:#f5f9ff;color:#15344b;font-size:24px;font-weight:800;border:3px solid #96bdd6}.answers img{display:block;width:100%;height:112px;object-fit:contain;background:white;border-radius:8px}.answers .emo{display:block;font-size:72px}.answers button.good{border-color:#20b15a;background:#d9ffe5}.answers button.bad{border-color:#e66b69;background:#ffe4e4}.status{min-height:40px;font-size:23px;font-weight:700}label{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}input,select,textarea{padding:10px;border-radius:9px;border:1px solid #9db1c3;background:#fff;color:#152b3b;max-width:100%}textarea{width:100%;min-height:75px}h2{margin:0 0 12px}.muted{color:#bfd0e0;font-size:15px}.fields{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:12px 0}.photo{max-width:330px;width:100%;max-height:250px;object-fit:contain;background:white;border-radius:14px}.lesson{display:flex;gap:18px;align-items:center;flex-wrap:wrap}.lesson p{font-size:27px;flex:1;min-width:230px}.rowitem{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:9px;border-bottom:1px solid #617084}.teacher{background:#3b3543}footer{color:#b8c7d5;text-align:center;padding:10px 20px 30px;font-size:13px}@media(max-width:900px){.grid{grid-template-columns:repeat(4,1fr)}.core{grid-template-columns:repeat(4,1fr)}.answers{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.wrap{padding:8px}.grid{grid-template-columns:repeat(3,1fr)}.tile{font-size:16px;min-height:110px}.tile img{height:76px}.answers button{font-size:19px}.panel{padding:12px}}
 
 #corePanel{position:sticky;bottom:0;z-index:5;border:3px solid #e6c980;box-shadow:0 -5px 20px #0005;background:#fff4d8;color:#253446}#corePanel h2{font-size:18px;margin-bottom:8px}.core{grid-template-columns:repeat(7,minmax(0,1fr))}.core button{min-height:94px;background:#f9fcff;border:2px solid #b6c8d5;border-radius:12px}.core button:first-child{background:#e0f9e7;border-color:#58c58d}.core button:last-child{background:#ffe6e8;border-color:#f197a2}.core img{height:47px;max-width:100%;object-fit:contain;display:block;margin:auto}.core .emo{font-size:39px}.editrow{padding:12px;border:1px solid #637d91;border-radius:12px;margin:8px 0}.editrow input{margin:4px}.editrow img{max-height:65px;max-width:90px;vertical-align:middle}.editrow button{padding:7px 12px}.coreStatus{font-size:18px;font-weight:bold;margin:6px 0}.teacherGrid{max-height:480px;overflow:auto} @media(max-width:700px){.core{grid-template-columns:repeat(4,1fr)}.core button:first-child{grid-column:1}.core button:last-child{grid-column:4}}
@@ -811,7 +811,7 @@ main.wrap > .fields select{
  #sentenceTab .aac-sentence-model .aac-token-word,#sentenceTab .aac-sentence-slot .aac-token-word,#sentenceTab .aac-sentence-piece .aac-token-word{font-size:21px!important}
 }
 </style>
-</head><body><header><div><h1 id="aacSiteTitle">🍔 飲食生活 AAC 溝通與學習</h1><small id="aacSiteSubtitle">文林國小特教班｜第 8～14 週｜網站學生版｜照片僅存本機</small></div><div class="aac-header-actions" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><label class="aac-core-toggle" for="aacCoreVisible"><input id="aacCoreVisible" type="checkbox" checked onchange="aacSetCoreVisible(this.checked)" aria-controls="corePanel"><span>顯示核心詞彙板</span></label><button id="aacHeaderVoice" onclick="switchTab('settings')">⚙️ 設定</button></div></header><main class="wrap"><nav class="nav" id="nav"></nav><div class="fields"><label>練習者代號 <input id="student" placeholder="例如：測試01" maxlength="25" style="width:150px"></label><label id="aacChoicesField">選項數 <select id="choices"><option>2</option><option>3</option><option selected>4</option></select></label><label id="aacQuestionCountField">練習題數 <select id="sessionQuestionCount" aria-label="每次練習題數"><option value="3">3 題</option><option value="5" selected>5 題</option><option value="10">10 題</option><option value="15">15 題</option><option value="all">全部</option></select></label></div>
+</head><body><header><div><h1 id="aacSiteTitle">🍔 飲食生活 AAC 溝通與學習</h1><small id="aacSiteSubtitle">文林國小特教班｜第 8～14 週｜全班七位學生共用入口｜個別化學習</small></div><div class="aac-header-actions" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end"><label class="aac-core-toggle" for="aacCoreVisible"><input id="aacCoreVisible" type="checkbox" checked onchange="aacSetCoreVisible(this.checked)" aria-controls="corePanel"><span>顯示核心詞彙板</span></label><button id="aacHeaderVoice" onclick="switchTab('settings')">⚙️ 設定</button></div></header><main class="wrap"><nav class="nav" id="nav"></nav><div class="fields"><label>練習者代號 <input id="student" placeholder="例如：測試01" maxlength="25" style="width:150px"></label><label id="aacChoicesField">選項數 <select id="choices"><option>2</option><option>3</option><option selected>4</option></select></label><label id="aacQuestionCountField">練習題數 <select id="sessionQuestionCount" aria-label="每次練習題數"><option value="3">3 題</option><option value="5" selected>5 題</option><option value="10">10 題</option><option value="15">15 題</option><option value="all">全部</option></select></label></div>
 <section class="panel hide" id="talk" aria-hidden="true"><h2>💬 自由溝通｜點圖卡組句子</h2><div class="bar" id="sentence">請點選圖卡</div><div class="actions"><button class="primary" onclick="speak(tokens.join(''))">🔊 朗讀整句</button><button onclick="tokens.pop();renderSentence()">↶ 刪除一詞</button><button onclick="tokens=[];renderSentence()">清除句子</button></div><div class="actions" aria-label="常用動作"><button onclick="pickWithoutVoice('喝')">🥤 喝</button><button onclick="pickWithoutVoice('吃')">🍽️ 吃</button><button onclick="pickWithoutVoice('要')">🙋 要</button></div><div class="grid hide" id="board"></div></section>
 <section class="panel hide" id="sentenceTab" aria-label="句條排列練習">
 <h2>🧩 句條排列 <span id="aacSentenceProgress" class="aac-sentence-count">第 1 / 10 題</span></h2>
@@ -1023,7 +1023,7 @@ $('cloudUrl').value=localStorage.getItem(CLOUD_URL_KEY)||'';$('choices').onchang
 #studentEditList .student-edit-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-bottom:1px solid #8297a5;padding:12px 0}#studentEditList input[type=text]{width:140px}#studentEditList img{width:54px;height:54px;border-radius:50%;object-fit:cover}
 #changeStudentBtn{margin-left:8px;background:#f7e2a2;color:#283644;border:0;border-radius:8px;padding:10px;cursor:pointer}
 </style>
-<div id="studentChooser" role="dialog" aria-modal="true" aria-label="選擇練習學生"><div class="student-dialog"><h2>👋 請選擇你的照片</h2><p>點選自己的照片，開始 AAC 練習</p><div id="studentCards"></div><p style="font-size:14px;color:#657789">照片與顯示名稱只存在這台裝置。請由老師或家長協助設定；共用裝置請留意隱私。</p></div></div>
+<div id="studentChooser" role="dialog" aria-modal="true" aria-label="選擇練習學生"><div class="student-dialog"><h2>👋 請選擇你的照片</h2><p>點選自己的照片，開始 AAC 練習</p><div id="studentCards"></div><p style="font-size:14px;color:#657789">全班七位學生共用入口，請確認選對自己的名字。切換學生時，個別設定與練習紀錄會分開處理。</p></div></div>
 <script>
 (function(){
 const KEY='aac_student_profiles_v2';
@@ -1039,14 +1039,14 @@ const studentInput=document.getElementById('student');
 studentInput.readOnly=true;
 studentInput.title='請點選自己的名字與動物圖像';
 const heading=chooser.querySelector('h2');if(heading)heading.textContent='👋 請選擇你的名字';
-const hint=chooser.querySelector('p');if(hint)hint.textContent='點選自己的動物圖像，開始 AAC 練習';
+const hint=chooser.querySelector('p');if(hint)hint.textContent='每次進入請選擇自己的名字，系統會載入老師為你設定的學習內容';
 const changeBtn=document.createElement('button');changeBtn.id='changeStudentBtn';changeBtn.type='button';changeBtn.textContent='👤 選擇學生';changeBtn.onclick=()=>{chooser.classList.remove('is-hidden');renderCards()};
 studentInput.insertAdjacentElement('afterend',changeBtn);
 function save(){localStorage.setItem(KEY,JSON.stringify(profiles))}
 function renderCards(){
  const root=document.getElementById('studentCards');root.replaceChildren();
  const allowed=window.aacAuthorizedStudentCodes;
- const shown=Array.isArray(allowed)?allowed.map(c=>profiles.find(p=>p.code===c)||{code:c,name:c==='TEST001'?'測試學生':c,icon:'🐻'}):profiles;
+ const shown=Array.isArray(allowed)?defaults.filter(p=>allowed.includes(p.code)).map(p=>profiles.find(x=>x.code===p.code)||p):defaults;
  shown.forEach(p=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',p.name);
  const av=document.createElement('span');av.className='avatar';av.textContent=p.icon;av.style.fontSize='54px';b.append(av);
  const name=document.createElement('span');name.textContent=p.name;b.append(name);
@@ -1190,12 +1190,12 @@ window.aacApplySiteSettings();
 </style>
 <div id="aacPairGate" role="dialog" aria-modal="true" aria-labelledby="aacPairHeading" hidden>
 <div class="panel"><h2 id="aacPairHeading">🔐 學生裝置授權</h2>
-<p>請老師在教師版產生六位數配對碼，再輸入到這台裝置。</p>
+<p>第一次使用請老師在教師版「🔑 配對與裝置」建立「全班共用」六位數配對碼（授權七位學生）。</p>
 <label for="aacPairCode">六位數配對碼</label>
 <input id="aacPairCode" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" placeholder="000000" />
 <button id="aacPairSubmit" type="button">確認配對</button>
 <p id="aacPairStatus" role="status"></p>
-<p class="note">配對碼有效時間為五分鐘，且只能使用一次。配對成功後，本裝置只會顯示老師授權的學生。</p>
+<p class="note">教師建立的全班共用配對碼有效 24 小時，最多可供 10 台設備首次配對。配對完成後，每次均可選擇全班七位學生。</p>
 </div></div>
 <button id="aacRepairDevice" type="button" hidden>🔐 重新配對裝置</button>
 <script>
@@ -1214,7 +1214,8 @@ function codesFrom(data){
 }
 function apply(s){
  const codes=Array.isArray(s?.student_codes)?s.student_codes:[];
- if(!s?.device_token||!codes.length)return false;
+ const fullClass=['WL001','WL002','WL003','WL004','WL005','WL006','WL007'];
+ if(!s?.device_token||!fullClass.every(code=>codes.includes(code)))return false;
  document.documentElement.classList.add('aac-paired');
  window.aacAuthorizedStudentCodes=codes;
  window.aacDeviceToken=s.device_token; // 僅供未來具驗證的後端功能使用，不會自動上傳練習成績
@@ -1226,7 +1227,7 @@ function apply(s){
  gate.hidden=true;repair.hidden=false;return true;
 }
 function showGate(message){document.documentElement.classList.remove('aac-paired');gate.hidden=false;repair.hidden=true;status.textContent=message||'';const chooser=document.getElementById('studentChooser');if(chooser)chooser.classList.add('is-hidden');setTimeout(()=>code.focus(),0)}
-if(!apply(session))showGate('請由老師協助完成裝置配對。本修正版須重新輸入配對碼。');
+if(!apply(session))showGate('請使用教師版建立的「全班七位學生」共用配對碼。若先前只配對一位學生，請重新配對一次。');
 submit.addEventListener('click',async()=>{
  const pairing_code=code.value.replace(/\D/g,'');
  if(!/^\d{6}$/.test(pairing_code)){status.textContent='請輸入完整的六位數配對碼';return}
@@ -1240,12 +1241,12 @@ submit.addEventListener('click',async()=>{
   if(!response.ok||data.success===false)throw Error(data.error||'伺服器回應 HTTP '+response.status);
   const token=data.device_token||data.deviceToken||data.token;
   const student_codes=codesFrom(data);
-  if(typeof token!=='string'||!token||!student_codes.length)throw Error('伺服器未提供完整裝置憑證或授權學生名單，請確認配對函式回傳格式');
+  if(typeof token!=='string'||!token||!['WL001','WL002','WL003','WL004','WL005','WL006','WL007'].every(c=>student_codes.includes(c)))throw Error('此配對碼不是全班七位學生共用碼，請老師在教師版建立「全班共用」配對碼');
   const next={device_token:token,student_codes,device_id:data.device_id||null,paired_at:new Date().toISOString()};
   localStorage.setItem(STORE,JSON.stringify(next));session=next;
   if(!apply(next))throw Error('無法啟用學生授權');
   code.value='';
- }catch(e){status.textContent='⚠ '+e.message+'。如配對碼已使用，請老師產生新的配對碼。'}
+ }catch(e){status.textContent='⚠ '+e.message+'。若顯示 Failed to fetch，請從 GitHub 網站開啟並檢查連線；不是配對碼已使用的證明。'}
  finally{submit.disabled=false}
 });
 code.addEventListener('keydown',e=>{if(e.key==='Enter')submit.click()});
